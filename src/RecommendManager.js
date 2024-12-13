@@ -26,7 +26,8 @@ class RecommendManager {
       const notEatMenu = await this.#readNotEat();
       this.#coachesList = this.#saveCoachInfo(notEatMenu);
       // console.log(this.#coachesList)
-      const result = this.#recommend.recommendMenu(this.#coachesList);
+      const categoryResult = this.#recommend.recommendMenu(this.#coachesList);
+      this.#outputView.printResult(this.#coachesList, categoryResult);
     } catch (error) {
       throw error;
     }
