@@ -60,9 +60,10 @@ class Validate {
   }
 
   notEatMenu(input) {
-    this.isEmpty(input);
-    const menus = input.split(',');
-    this.isValidMenu(menus);
+    if (input.trim()) {
+      const menus = input.split(',');
+      this.isValidMenu(menus);
+    }
   }
 
   isValidMenu(menus) {

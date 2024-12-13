@@ -1,18 +1,22 @@
+import Coach from './Coach.js';
 import InputView from './InputView.js'
 import OutputView from './OutputView.js'
+import Recommend from './Recommend.js';
 import Validate from './Validate.js'
-import MENU from './constatnt.js'
 
 class RecommendManager {
-  #inputView
-  #outputView
-  #validate
-  #coaches
+  #inputView;
+  #outputView;
+  #validate;
+  #recommend;
+  #coaches;
+  #coachesList;
 
   constructor() {
     this.#inputView = new InputView();
     this.#outputView = new OutputView();
     this.#validate = new Validate();
+    this.#recommend = new Recommend();
   }
 
   async start() {
@@ -20,7 +24,9 @@ class RecommendManager {
       this.#outputView.printStartMessage();
       this.#coaches = await this.#readNames();
       const notEatMenu = await this.#readNotEat();
-      console.log(notEatMenu)
+      this.#coachesList = this.#saveCoachInfo(notEatMenu);
+      // console.log(this.#coachesList)
+      const result = this.#recommend.recommendMenu(this.#coachesList);
     } catch (error) {
       throw error;
     }
@@ -36,6 +42,14 @@ class RecommendManager {
         this.#outputView.printErrorMessage(error.message);
       }
     }
+  }
+
+  #saveCoachInfo(notEatMenu) {
+    const coachesInfo = [];
+    this.#coaches.forEach((coach, i) => {
+      coachesInfo.push(new Coach(coach, notEatMenu[i]));
+    })
+    return coachesInfo;
   }
 
   async #readNotEat() {
